@@ -20,7 +20,7 @@ Aplikacja umożliwia:
 ## Uruchomienie projektu
 
 ```bash
-git clone 
+git clone https://github.com/wojtekp2002/PokeExplorer-zadanie
 npm install
 npm run dev
 ```
