@@ -87,7 +87,7 @@ function App() {
             className="h-8 w-8"
           />
 
-          <h1 className="bg-gradient-to-r from-orange-400 via-orange-500 to-yellow-300 bg-clip-text text-center text-4xl font-extrabold text-transparent md:text-5xl">
+          <h1 className="bg-gradient-to-r from-orange-400 via-orange-500 to-yellow-300 bg-clip-text text-center text-4xl font-extrabold text-transparent md:text-4xl">
             Pokémon Explorer
           </h1>
         </div>
