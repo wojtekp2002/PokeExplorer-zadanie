@@ -20,9 +20,12 @@ export const typeColors: Record<string, string> = {
 };
 
 export function getPokemonCardBackground(types: string[]) {
+  const firstColor = typeColors[types[0]];
+  const secondColor = typeColors[types[1]] ?? firstColor;
+
   if (types.length === 1) {
-    return typeColors[types[0]];
+    return firstColor;
   }
 
-  return `linear-gradient(135deg, ${typeColors[types[0]]}, ${typeColors[types[1]]})`;
+  return `linear-gradient(90deg, ${firstColor} 0%, ${secondColor} 100%)`;
 }
