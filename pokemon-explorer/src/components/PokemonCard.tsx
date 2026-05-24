@@ -8,29 +8,31 @@ type PokemonCardProps = {
 export function PokemonCard({ pokemon }: PokemonCardProps) {
   return (
     <article
-      className="rounded-2xl p-6 text-white shadow-lg transition-transform hover:scale-[1.02]"
+      className="min-h-[210px] rounded-2xl p-5 text-white shadow-lg transition-transform hover:scale-[1.02]"
       style={{
         background: getPokemonCardBackground(pokemon.types),
       }}
     >
-      <div className="flex flex-col items-center">
+      <div className="flex h-full flex-col items-center justify-center">
         <img
           src={pokemon.image}
           alt={pokemon.name}
-          className="h-28 w-28 object-contain"
+          className="h-24 w-24 object-contain"
         />
 
-        <h2 className="mt-2 text-xl font-bold capitalize">{pokemon.name}</h2>
+        <h2 className="mt-2 text-2xl font-extrabold capitalize leading-tight">
+          {pokemon.name}
+        </h2>
 
-        <p className="text-white/85">
+        <p className="mt-1 text-base font-semibold text-white/85">
           #{pokemon.id.toString().padStart(3, '0')}
         </p>
 
-        <div className="mt-3 flex gap-2">
+        <div className="mt-4 flex gap-2">
           {pokemon.types.map((type) => (
             <span
               key={type}
-              className="rounded-full bg-white/30 px-3 py-1 text-sm font-semibold capitalize text-white shadow-sm"
+              className="rounded-full bg-white/30 px-3 py-1 text-sm font-bold capitalize text-white shadow-sm"
             >
               {type}
             </span>

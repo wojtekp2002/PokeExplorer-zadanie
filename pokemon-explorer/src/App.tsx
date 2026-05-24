@@ -7,6 +7,8 @@ import { typeColors } from './utils/typeColors';
 
 
 const PAGE_SIZE = 24;
+const POKEBALL_IMAGE_URL =
+  'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png';
 
 function App() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -76,21 +78,32 @@ function App() {
 
   return (
     <main className="min-h-screen bg-[#111111] px-6 py-8 text-white">
-      <h1 className="mb-10 text-center text-4xl font-bold text-orange-500">
-        Pokémon Explorer
-      </h1>
+      <header className="mb-8 flex flex-col items-center">
+        <div className="mb-6 flex items-center gap-3">
+          <img
+            src={POKEBALL_IMAGE_URL}
+            alt=""
+            aria-hidden="true"
+            className="h-8 w-8"
+          />
 
-      <div className="mx-auto mb-6 max-w-xl">
-        <input
-          type="text"
-          placeholder="Search pokemon..."
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          className="w-full rounded-full border border-zinc-700 bg-zinc-900 px-5 py-3 text-white outline-none transition focus:border-orange-500"
-        />
-      </div>
+          <h1 className="text-center text-4xl font-extrabold text-orange-500 md:text-5xl">
+            Pokémon Explorer
+          </h1>
+        </div>
 
-      <div className="mb-10 flex flex-wrap justify-center gap-3">
+        <div className="w-full max-w-xl">
+          <input
+            type="text"
+            placeholder="Search pokemon..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            className="w-full rounded-full border border-zinc-700 bg-zinc-900 px-5 py-3 text-white outline-none transition placeholder:text-zinc-400 focus:border-orange-500"
+          />
+        </div>
+      </header>
+
+      <div className="mx-auto mb-10 flex max-w-3xl flex-wrap justify-center gap-2.5">
         {pokemonTypes.map((type) => {
           const isSelected = selectedTypes.includes(type);
 
@@ -99,10 +112,8 @@ function App() {
               key={type}
               type="button"
               onClick={() => toggleType(type)}
-              className={`rounded-full px-4 py-2 text-sm font-semibold capitalize text-white transition ${
-                isSelected
-                  ? 'ring-2 ring-white'
-                  : ''
+              className={`rounded-full px-3.5 py-1.5 text-sm font-bold capitalize text-white transition hover:scale-105 ${
+                isSelected ? 'ring-2 ring-white ring-offset-2 ring-offset-[#111111]' : ''
               }`}
               style={{
                 backgroundColor: typeColors[type],
