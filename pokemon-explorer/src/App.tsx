@@ -1,52 +1,47 @@
 import { useEffect, useState } from 'react';
+import { fetchPokemons } from './api/pokemon';
+import { PokemonCard } from './components/PokemonCard';
+import type { Pokemon } from './types/pokemon';
 
-type Pokemon = {
-  id: number;
-  name: string;
-  image: string;
-  types: string[];
-};
+const PAGE_SIZE = 24;
 
 function App() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
-    async function fetchPokemons() {
+    async function loadInitialPokemons() {
       try {
-        const response = await fetch(
-          'https://pokeapi.co/api/v2/pokemon?limit=24'
-        );
+        const data = await fetchPokemons(PAGE_SIZE, 0);
 
-        const data = await response.json();
-
-        const pokemonDetails = await Promise.all(
-          data.results.map(async (pokemon: { url: string }) => {
-            const response = await fetch(pokemon.url);
-
-            const data = await response.json();
-
-            return {
-              id: data.id,
-              name: data.name,
-              image: data.sprites.other['official-artwork'].front_default,
-              types: data.types.map(
-                (type: { type: { name: string } }) => type.type.name
-              ),
-            };
-          })
-        );
-
-        setPokemons(pokemonDetails);
+        setPokemons(data);
       } catch (error) {
-        console.error('Error while fetching pokemons:', error);
+        console.error('Error while loading pokemons:', error);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchPokemons();
+    loadInitialPokemons();
   }, []);
+
+  async function handleLoadMore() {
+    try {
+      setLoadingMore(true);
+
+      const nextOffset = offset + PAGE_SIZE;
+      const data = await fetchPokemons(PAGE_SIZE, nextOffset);
+
+      setPokemons((currentPokemons) => [...currentPokemons, ...data]);
+      setOffset(nextOffset);
+    } catch (error) {
+      console.error('Error while loading more pokemons:', error);
+    } finally {
+      setLoadingMore(false);
+    }
+  }
 
   return (
     <main className="min-h-screen bg-[#111111] px-6 py-8 text-white">
@@ -57,41 +52,24 @@ function App() {
       {loading ? (
         <p className="text-center">Loading...</p>
       ) : (
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {pokemons.map((pokemon) => (
-            <div
-              key={pokemon.name}
-              className="rounded-2xl bg-zinc-800 p-6 transition-transform hover:scale-[1.02]"
+        <>
+          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {pokemons.map((pokemon) => (
+              <PokemonCard key={pokemon.id} pokemon={pokemon} />
+            ))}
+          </div>
+
+          <div className="mt-10 flex justify-center">
+            <button
+              type="button"
+              onClick={handleLoadMore}
+              disabled={loadingMore}
+              className="rounded-full bg-orange-500 px-6 py-3 font-semibold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <div className="flex flex-col items-center">
-                <img
-                  src={pokemon.image}
-                  alt={pokemon.name}
-                  className="h-28 w-28 object-contain"
-                />
-
-                <h2 className="mt-2 text-xl font-bold capitalize">
-                  {pokemon.name}
-                </h2>
-
-                <p className="text-zinc-400">
-                  #{pokemon.id.toString().padStart(3, '0')}
-                </p>
-
-                <div className="mt-3 flex gap-2">
-                  {pokemon.types.map((type) => (
-                    <span
-                      key={type}
-                      className="rounded-full bg-white/20 px-3 py-1 text-sm"
-                    >
-                      {type}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              {loadingMore ? 'Loading...' : 'Load more'}
+            </button>
+          </div>
+        </>
       )}
     </main>
   );
