@@ -62,6 +62,11 @@ function App() {
     });
   }
 
+  function clearFilters() {
+    setSearch('');
+    setSelectedTypes([]);
+  }
+
   const filteredPokemons = pokemons.filter((pokemon) => {
     const matchesSearch = pokemon.name
       .toLowerCase()
@@ -129,11 +134,29 @@ function App() {
         <p className="text-center">Loading...</p>
       ) : (
         <>
-          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredPokemons.map((pokemon) => (
-              <PokemonCard key={pokemon.id} pokemon={pokemon} />
-            ))}
-          </div>
+          {filteredPokemons.length === 0 ? (
+            <section className="mx-auto mt-16 max-w-md rounded-2xl border border-zinc-800 bg-zinc-900/70 p-8 text-center">
+              <h2 className="text-2xl font-bold text-white">No Pokémon found</h2>
+
+              <p className="mt-3 text-zinc-400">
+                Try changing your search phrase or selected type filters.
+              </p>
+
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="mt-6 rounded-full bg-orange-500 px-5 py-2 font-semibold text-white transition hover:bg-orange-600"
+              >
+                Clear filters
+              </button>
+            </section>
+          ) : (
+            <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {filteredPokemons.map((pokemon) => (
+                <PokemonCard key={pokemon.id} pokemon={pokemon} />
+              ))}
+            </div>
+          )}
 
           <div className="mt-10 flex justify-center">
             <button
