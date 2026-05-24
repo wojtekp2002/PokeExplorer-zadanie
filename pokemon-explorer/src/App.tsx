@@ -3,6 +3,7 @@ import { fetchPokemons } from './api/pokemon';
 import { PokemonCard } from './components/PokemonCard';
 import type { Pokemon } from './types/pokemon';
 
+
 const PAGE_SIZE = 24;
 
 function App() {

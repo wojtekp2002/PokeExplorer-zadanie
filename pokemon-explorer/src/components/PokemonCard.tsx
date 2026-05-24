@@ -1,4 +1,5 @@
 import type { Pokemon } from '../types/pokemon';
+import { getPokemonCardBackground } from '../utils/typeColors';
 
 type PokemonCardProps = {
   pokemon: Pokemon;
@@ -6,7 +7,12 @@ type PokemonCardProps = {
 
 export function PokemonCard({ pokemon }: PokemonCardProps) {
   return (
-    <article className="rounded-2xl bg-zinc-800 p-6 transition-transform hover:scale-[1.02]">
+    <article
+        className="rounded-2xl p-6 text-white shadow-lg transition-transform hover:scale-[1.02]"
+        style={{
+            background: getPokemonCardBackground(pokemon.types),
+        }}
+    >
       <div className="flex flex-col items-center">
         <img
           src={pokemon.image}
@@ -24,7 +30,7 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
           {pokemon.types.map((type) => (
             <span
               key={type}
-              className="rounded-full bg-white/20 px-3 py-1 text-sm capitalize"
+              className="rounded-full bg-black/20 px-3 py-1 text-sm capitalize backdrop-blur-sm"
             >
               {type}
             </span>
