@@ -21,6 +21,7 @@ Aplikacja umożliwia:
 
 ```bash
 git clone https://github.com/wojtekp2002/PokeExplorer-zadanie
+cd pokemon-explorer
 npm install
 npm run dev
 ```
